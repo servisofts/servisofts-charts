@@ -1,3 +1,5 @@
 import SCharts from "./SCharts";
-export { SCharts };
+import Example from "./example";
+export * from "./SCharts/type"
+export { SCharts, Example };
 export default SCharts;
