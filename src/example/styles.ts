@@ -12,7 +12,6 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         width: "100%",
-        backgroundColor: theme.color.secondary
     },
     text: {
         color: theme.color.text,
