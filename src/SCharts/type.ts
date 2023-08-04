@@ -8,14 +8,15 @@ export type SChartStyleType = {
 }
 
 export type SChartConfig = {
-    viewBox?: { width: number, height: number }
-    separacion?: number,
+
+    space?: number,
     grosor?: number,
     endSpace?: number,
     textColor?: string,
     fontSize?: number,
 }
 export type SChartsPropsType = {
+    viewBox?: { width: number, height: number },
     type: keyof typeof Options,
     data: DataPropsType[],
     style?: SChartStyleType,
@@ -30,6 +31,7 @@ export type OptionsType = {
 
 
 export type DataValueType = { val: number }
+// export type DataPropsType = { [key: string]: number }
 export type DataPropsType = {
     key: string,
     val: number | DataValueType,

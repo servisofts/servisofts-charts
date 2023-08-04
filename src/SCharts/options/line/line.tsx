@@ -14,31 +14,34 @@ export default class index extends Component<OptionsType> {
         super(props);
     }
 
-    render_data({ width, height }) {
-        if (!this.props.data) return null;
-        var arr = Func.simplifyObjectValue(this.props.data);
-        const max = Func.calcular_maximo(this.props.data)
-        const space = this.props.config.space / 2
-        const separacion = ((width / arr.length) * space) + ((this.props.style.strokeWidth ?? 0))
+
+
+    render_line() {
+        const { width, height } = this.props.viewBox;
+        const arr = Func.simplifyObjectValue(this.props.data);
+        const max = Func.calcular_maximo(arr);
+        const separacion = ((width / arr.length) * 0.2) + ((this.props.style.strokeWidth ?? 0))
         const grosor = ((width - (separacion * arr.length)) / arr.length)
-        const radius = 10;
+        let last = { x: 0, y: height }
         return arr.map((obj, i) => {
             if (!obj.color) obj.color = Func.color_random();
             let porcent: number = Func.calcular_procentaje({ val: obj.val, max: max })
-            let x = ((i * (separacion + grosor)) + separacion / 2);
             const strokeWidth = obj.style?.strokeWidth ?? (this.props?.style?.strokeWidth ?? 0)
-            return <Rect
-                x={x}
-                y={height - ((height) * porcent) + (strokeWidth / 2)}
-                width={grosor}
-                height={((height) * porcent) + radius}
-                fill={obj.color}
+            let x = ((i * (separacion + grosor)) + separacion / 2) + (grosor / 2);
+            let y = height - ((height) * porcent) + (strokeWidth / 2)
+            var d = [
+                "M", last.x, last.y,
+                "L", x, y,
+            ].join(" ");
+            const item = <Path
+                d={d}
+                // fill={obj.color}
                 stroke={obj.color}
-                ry={radius}
-                {...Func.create_onPress(() => this.props.onSelect ? this.props.onSelect(obj) : null)}
                 {...this.props.style}
                 {...obj.style}
             />
+            last = { x: x, y: y };
+            return item;
         })
     }
     render_rules() {
@@ -51,11 +54,9 @@ export default class index extends Component<OptionsType> {
     }
     render() {
         const { width, height } = this.props.viewBox;
-        return (
-            <Svg height="100%" width="100%" viewBox={`0 0 ${width} ${height}`} >
-                {this.render_rules()}
-                {this.render_data({ width: width, height: height })}
-            </Svg>
-        )
+        return <Svg height="100%" width="100%" viewBox={`0 0 ${width} ${height}`} >
+            {/* {this.render_rules()} */}
+            {this.render_line()}
+        </Svg>
     }
 }
