@@ -1,51 +1,55 @@
-import React, { useState } from "react"
-import { View, Text, TouchableOpacity, FlatList, } from 'react-native'
+import React, { useEffect } from "react"
+import { ScrollView, View } from 'react-native'
 import styles from "./styles"
-import SCharts, { Options } from "../SCharts"
-import { DataPropsType } from "../SCharts/type"
-
-const generateRandom = () => Math.random() * 100 + 1
-
-const data: DataPropsType[] = [
-    { key: "Ventas", val: generateRandom() },
-    { key: "Pedidos", val: generateRandom() },
-    { key: "Facturas", val: generateRandom() },
-    { key: "Devoluciones", val: generateRandom() },
-    { key: "Otros", val: generateRandom() },
-    { key: "Otros1", val: generateRandom() },
-    { key: "Otros2", val: generateRandom() },
-    { key: "Otros3", val: generateRandom() },
-    { key: "Facturas", val: generateRandom() },
-    { key: "Devoluciones", val: generateRandom() },
-    { key: "Otros", val: generateRandom() },
-    { key: "Otros1", val: generateRandom() },
-    { key: "Otros2", val: generateRandom() },
-    { key: "Otros3", val: generateRandom() },
-]
-// const data: DataPropsType = {
-//     "2023-01-01": 10,
-//     "2023-01-02": 10,
-//     "2023-01-03": 10,
-//     "2023-01-04": 10,
-//     "2023-01-05": 10,
-// }
-
-const Option = ({ type, onPress }) => {
-    return <TouchableOpacity style={{ borderWidth: 1, borderColor: "#666", borderRadius: 4, height: 30, padding: 4, minWidth: 100, justifyContent: "center", alignItems: "center" }} onPress={onPress}>
-        <Text style={styles.text}>{type}</Text>
-    </TouchableOpacity>
-}
-
+import SCharts from ".."
+import data1 from "./datat1"
+import data2 from "./datat2"
+import data3 from "./datat3"
+import { SChartPropsType } from "../type"
+// const data = require("./datat1.json")
+const data = [data1, data2, data3]
 export default (props) => {
-    const [type, setType] = useState(props?.route?.params?.type ?? "bar");
-    return <View style={styles.container}>
-        <View style={{ backgroundColor: "#202020" }}>
-            <FlatList
-                horizontal
-                data={Object.keys(Options)}
-                renderItem={p => <Option type={p.item} onPress={() => setType(p.item)} />} />
+    let i = 0;
+    let extraProps = {
+        showLabel: true,
+        showValue: true,
+        strokeWidth: 2,
+        // colors: ['#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fd5800', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff', '#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fd5800', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff', '#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fd5800', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff']
+    }
+    return <ScrollView>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", width: "100%", }}>
+            <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Table" />
+            </View>
+            <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Barras" />
+            </View>
+            <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Column" />
+            </View>
+            <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Line" />
+            </View>
+            <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Wave" />
+            </View>
+            <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Donut"/>
+            </View>
+            <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Donut_gauge" />
+            </View>
+            {/* <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Test" />
+            </View>
+            */}
+            {/* <View style={styles.caja}></View>
+            <View style={styles.caja}></View>
+            <View style={styles.caja}></View>
+            <View style={styles.caja}></View>
+            <View style={styles.caja}></View>
+            <View style={styles.caja}></View> */}
 
         </View>
-        <SCharts type={type} data={data} />
-    </View>
+    </ScrollView>
 }

@@ -3,13 +3,14 @@ import { DataPropsType, DataValueType } from "./type";
 export const calcular_procentaje_100 = ({ val, max }) => {
     return (val / max) * 100;
 }
-export const simplifyObjectValue = (arr: DataPropsType[]) => {
-    let arr2 = [...arr]
-    Object.values(arr2).map(o => {
-        if (typeof o.val != "number") {
+export const simplifyObjectValue = (data: DataPropsType) => {
+    Object.values(data)
+    let arr2 = [...Object.values(data)]
+    arr2.map(o => {
+        if (typeof o != "number") {
             let sum = 0;
-            Object.values(o.val).map(o => sum += o)
-            o.val = sum;
+            Object.values(o).map(p => sum += parseFloat(p+""))
+            o = sum;
         }
     })
     return arr2;
@@ -30,11 +31,11 @@ export const calcular_maximo = (arr: DataPropsType[]) => {
     })
     return max;
 }
-export const max = (arr: DataPropsType[]) => {
+export const max = (data: DataPropsType) => {
     var max = 0;
-    arr.map(a => {
-        if (typeof a.val == "number") {
-            if (max < a.val) max = a.val
+    Object.values(data).map(a => {
+        if (typeof a == "number") {
+            if (max < a) max = a
         }
     })
     return max;

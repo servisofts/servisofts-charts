@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import styles from "./styles"
-import { Options } from "../SCharts"
+import options from "../SCharts/options"
 
 const Option = ({ type, onPress }) => {
     return <TouchableOpacity style={{ borderWidth: 1, height: 30, padding: 4, minWidth: 100, justifyContent: "center", alignItems: "center" }} onPress={onPress}>
@@ -23,7 +23,7 @@ export default (props) => {
         <View>
             <FlatList
                 horizontal
-                data={Object.keys(Options)}
+                data={Object.keys(options)}
                 renderItem={p => <Option type={p.item} onPress={handleOnPress.bind(this, p.item)} />} />
 
         </View>

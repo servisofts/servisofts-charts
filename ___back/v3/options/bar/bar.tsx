@@ -17,27 +17,26 @@ export default class index extends Component<OptionsType> {
     render_data({ width, height }) {
         if (!this.props.data) return null;
         var arr = Func.simplifyObjectValue(this.props.data);
-        const max = Func.calcular_maximo(this.props.data)
+        const max = Func.max(this.props.data)
         const space = this.props.config.space / 2
         const separacion = ((width / arr.length) * space) + ((this.props.style.strokeWidth ?? 0))
         const grosor = ((width - (separacion * arr.length)) / arr.length)
         const radius = 10;
         return arr.map((obj, i) => {
-            if (!obj.color) obj.color = Func.color_random();
-            let porcent: number = Func.calcular_procentaje({ val: obj.val, max: max })
+            const color = Func.color_random();
+            let porcent: number = Func.calcular_procentaje({ val: obj, max: max })
             let x = ((i * (separacion + grosor)) + separacion / 2);
-            const strokeWidth = obj.style?.strokeWidth ?? (this.props?.style?.strokeWidth ?? 0)
+            // const strokeWidth = obj.style?.strokeWidth ?? (this.props?.style?.strokeWidth ?? 0)
+            const strokeWidth = this.props?.style?.strokeWidth
             return <Rect
                 x={x}
                 y={height - ((height) * porcent) + (strokeWidth / 2)}
                 width={grosor}
                 height={((height) * porcent) + radius}
-                fill={obj.color}
-                stroke={obj.color}
+                fill={color}
+                stroke={color}
                 ry={radius}
-                {...Func.create_onPress(() => this.props.onSelect ? this.props.onSelect(obj) : null)}
                 {...this.props.style}
-                {...obj.style}
             />
         })
     }

@@ -20,33 +20,27 @@ export default StyleSheet.create({
     text_h1: {
         color: theme.color.text,
         fontSize: 22,
-        fontWeight: "bold"
+        fontWeight:"bold"
     },
     text_h2: {
         color: theme.color.text,
         fontSize: 20,
-        fontWeight: "bold"
+        fontWeight:"bold"
     },
     text_h3: {
         color: theme.color.text,
         fontSize: 18,
-        fontWeight: "bold"
+        fontWeight:"bold"
     },
     text_h4: {
         color: theme.color.text,
         fontSize: 16,
-        fontWeight: "bold"
+        fontWeight:"bold"
     },
     text_h5: {
         color: theme.color.text,
         fontSize: 14,
-        fontWeight: "bold"
+        fontWeight:"bold"
     },
-    caja: {
-        // flex: 1,
-        width: 440,
-        height: 440,
-         borderWidth: 1, borderColor: "#66666666"
-    }
 
 })
