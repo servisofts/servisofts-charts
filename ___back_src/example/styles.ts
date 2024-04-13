@@ -44,10 +44,9 @@ export default StyleSheet.create({
     },
     caja: {
         // flex: 1,
-        width: "100%",
-        height: 400,
-        //  borderWidth: 1, 
-        //  borderColor: "#66666666"
+        width: 440,
+        height: 440,
+         borderWidth: 1, borderColor: "#66666666"
     }
 
 })

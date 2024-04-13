@@ -1,10 +1,11 @@
 import React from "react";
-import { Text, View } from "react-native";
-import { Data, SChartPropsType } from "./type";
+import { View } from "react-native";
+import { SChartPropsType } from "./type";
+import Theme from "./Theme";
 import GraphicsTypes from "./Graphic";
 
 import Example from "./example";
-import FrecuencyTable from "./FrequencyTable";
+import FrecuencyTable from "./Model/FrequencyTable";
 export { Example };
 
 
@@ -18,9 +19,10 @@ export default class SCharts extends React.Component<SChartPropsType> {
         this.setState({ viewBox: { width, height, x, y } })
     }
 
-
     render() {
         const { type, data, colors } = this.props;
+        
+         return null;   
 
         const table = new FrecuencyTable(data);
         if (colors) {

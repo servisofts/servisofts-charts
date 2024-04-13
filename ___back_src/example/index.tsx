@@ -8,16 +8,16 @@ import data3 from "./datat3"
 
 const data4 = {
     "ricky": {
-        "lunes": 10,
+        "lunes": 20,
         "martes": 30,
     },
     "ruddy": {
         "lunes": 20,
-        "martes": 15,
+        "martes": 100,
     },
     "eduardo": {
-        "lunes": 17,
-        "martes": 9,
+        "lunes": 90,
+        "martes": 20,
     }
 };
 import { SChartPropsType } from "../type"
@@ -28,21 +28,14 @@ export default (props) => {
         showLabel: true,
         showValue: true,
         strokeWidth: 2,
-        colors: ['#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fa5820', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff', '#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fd5800', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff', '#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fd5800', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff']
+        colors: ['#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fd5800', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff', '#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fd5800', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff', '#fd5800', '#ff358b', '#e0ffff', '#ff006e', '#fd5800', '#e0ffff', '#8cfffb', '#39ff14', '#ff006e', '#ff00ff']
     }
     return <ScrollView>
         <View style={{ flexDirection: "row", flexWrap: "wrap", width: "100%", }}>
             <View style={styles.caja}>
-                <SCharts data={data[i]}  {...extraProps} type="Barras" />
-            </View>
-            <View style={styles.caja}>
-                <SCharts data={data[i]}  {...extraProps} type="Donut_gauge" />
-            </View>
-            {/*
-            <View style={styles.caja}>
                 <SCharts data={data[i]}  {...extraProps} type="Table" />
             </View>
-             <View style={styles.caja}>
+            {/* <View style={styles.caja}>
                 <SCharts data={data[i]}  {...extraProps} type="Barras" />
             </View>
             <View style={styles.caja}>
@@ -57,7 +50,9 @@ export default (props) => {
             <View style={styles.caja}>
                 <SCharts data={data[i]}  {...extraProps} type="Donut" />
             </View>
-           */}
+            <View style={styles.caja}>
+                <SCharts data={data[i]}  {...extraProps} type="Donut_gauge" />
+            </View> */}
             {/* <View style={styles.caja}>
                 <SCharts data={data[i]}  {...extraProps} type="Test" />
             </View>

@@ -1,7 +1,7 @@
 // ----- Components -----
 import { ViewStyle } from "react-native"
 import GraphicsTypes from "./Graphic"
-import FrecuencyTable from "./FrequencyTable"
+import FrecuencyTable from "./Model/FrequencyTable"
 export type SChartPropsType = {
     data: Data,
     type?: keyof typeof GraphicsTypes,
@@ -18,8 +18,7 @@ export type SChartPropsType = {
 // ----- Models -----
 
 export type DataObj = { [key: string]: number }
-export type Data2 = { [key: string]: DataObj } | DataObj
-export type Data = { [key: string]: Data2 } | Data2
+export type Data = { [key: string]: DataObj } | DataObj
 
 export type ColorHex = `#${string}` | `transparent`
 

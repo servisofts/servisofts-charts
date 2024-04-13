@@ -3,62 +3,108 @@ import { G, Path, Rect, Svg, Text } from "react-native-svg"
 import { SChartPropsType } from "../type"
 import { color_random } from "../Functions"
 
-export default ({ viewBox, frecuencyTable, showLabel, showValue, strokeWidth = 2 }: SChartPropsType) => {
-    let { width, height, x, y } = viewBox
-    const interval_height = height / (frecuencyTable.intervals.length)
-    let space = 0.1 * interval_height;
-    let max = frecuencyTable.max("relative_frequency")
-    const Gra = frecuencyTable.relative_frequency.map((f, i) => {
-        let fy = f / max;
-        y += interval_height;
-        let label;
-        if (showLabel) {
-            label = (
+const Guide = (props: SChartPropsType) => {
+    let { width, height, x, y } = props.viewBox
+    return <>{
+        new Array(props.frecuencyTable.parts + 1).fill(0).map((a, i) => {
+            const xcenter = (i * (width / props.frecuencyTable.parts)) + x
+            return <>
+                <Path
+                    key={"r" + i}
+                    strokeWidth={1}
+                    stroke={"#666"}
+                    fill={"transparent"}
+                    d={[
+                        "M", xcenter, y,
+                        "L", xcenter, height + y,
+                    ].join(" ")}
+                />
+                <Path
+                    key={"r" + i}
+                    strokeWidth={1}
+                    stroke={"#666"}
+                    fill={"transparent"}
+                    d={[
+                        "M", x, height + y,
+                        "L", width + x, height + y,
+                    ].join(" ")}
+                />
                 <Text
-                    dx={x}
-                    dy={space / 2 + y - ((interval_height / 2) - (strokeWidth / 2))}
-                    textAnchor="start"
-                    // transform={`rotate(-90 ,${space / 2 + x - (interval_height - (strokeWidth / 2))},${y + height})`}
-                    fill={"#fff"}
-                    fontSize={8}
-                >{frecuencyTable.intervals[i]}</Text >
-            )
-        }
-
-        let value;
-        if (showValue) {
-            value = (
-                <Text
-                    dx={x + ((fy) * width - strokeWidth)}
-                    dy={space / 2 + y - ((interval_height / 2) - (strokeWidth / 2))}
-                    textAnchor="end"
-                    // transform={`rotate(-90 ,${space / 2 + x - (interval_height - (strokeWidth / 2))},${y + height})`}
+                    dx={xcenter}
+                    dy={height + y + 10}
+                    textAnchor="middle"
                     fill={"#fff"}
                     fontSize={10}
-                >{(frecuencyTable.frequency_data[i]).toFixed(1)}</Text >
-            )
+                >{props.frecuencyTable.scale * i}</Text >
+            </>
+        })
+    }
+    </>
+}
+
+const recursive_niveles = (props: SChartPropsType, index = 0, key = "") => {
+    if (!props.frecuencyTable.niveles[index]) return null;
+    let { width, height, x, y } = props.viewBox
+    const heightInterval = (height / props.frecuencyTable.niveles[index].length);
+    let padding = heightInterval * 0.1;
+    return props.frecuencyTable.niveles[index].map((a, i) => {
+
+
+        let indexAux = props.frecuencyTable.intervals.findIndex(itm => itm == (!key ? a : key + "-" + a));
+        console.log(props.frecuencyTable);
+        let fy = 0;
+        if (indexAux > -1) {
+            fy = props.frecuencyTable.frequency[indexAux] / (props.frecuencyTable.parts * props.frecuencyTable.scale);
+            padding = 0;
         }
+        const ys = ((i * heightInterval) + y) + (padding / 2)
+        const ye = ((i * heightInterval) + heightInterval + y) - (padding / 2)
+        const ycenter = (i * heightInterval) + (heightInterval / 2) + y
+        const strokeWidth = 2;
 
         return <>
-            <Path
+            <Text
+                dx={x - (20 * (props.frecuencyTable.niveles.length - 1 - index)) - 10}
+                dy={ycenter}
+                textAnchor="end"
+                fill={"#fff"}
+                fontSize={10}
+            >{a}</Text >
+            {indexAux <= -1 ? null : <Path
                 key={"r" + i}
                 strokeWidth={strokeWidth}
-                stroke={frecuencyTable.intervals_color[i]}
-                fill={"transparent"}
+                stroke={props.frecuencyTable.intervals_color[indexAux]}
+                fill={props.frecuencyTable.intervals_color[indexAux] + "22"}
+                // fill={"transparent"}
                 d={[
-                    "M", x, space / 2 + y - (interval_height - (strokeWidth / 2)),
-                    "L", x + ((fy) * width - strokeWidth), space / 2 + y - (interval_height - (strokeWidth / 2)),
-                    "L", x + ((fy) * width - strokeWidth), y - space / 2 - ((strokeWidth / 2)),
-                    "L", x, y - space / 2 - ((strokeWidth / 2))
+                    "M", x, ys + strokeWidth,
+                    "L", (width * fy) + x, ys + strokeWidth,
+                    "L", (width * fy) + x, ye - strokeWidth,
+                    "L", x, ye - strokeWidth,
+                    // "L", x, ys,
                 ].join(" ")}
-            />
-            {label}
-            {value}
-
+            />}
+            {recursive_niveles({
+                ...props, viewBox: {
+                    ...props.viewBox,
+                    height: heightInterval - padding,
+                    y: ys
+                }
+            }, index + 1, !key ? a : key + "-" + a)}
         </>
-
     })
+}
+const Niveles = (props: SChartPropsType) => {
+    return <>
+        {recursive_niveles(props, 0, "")}
+    </>
+}
+export default (props: SChartPropsType) => {
+    let { width, height, x, y } = props.viewBox
+    let newViewBox = { width: width - 100, height: height - 30, x: 90, y: 12 }
     return <Svg height="100%" width="100%" viewBox={`0 0 ${width} ${height}`} >
-        {Gra}
+        <Guide {...props} viewBox={newViewBox} />
+        {/* <Intervals {...props} viewBox={newViewBox} /> */}
+        <Niveles {...props} viewBox={newViewBox} />
     </Svg>
 }
