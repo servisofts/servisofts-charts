@@ -33,7 +33,7 @@ const Guide = (props: SChartPropsType) => {
                     dx={xcenter}
                     dy={height + y + 10}
                     textAnchor="middle"
-                    fill={"#fff"}
+                    fill={props.textColor ?? "#000"}
                     fontSize={10}
                 >{props.frecuencyTable.range_min + (props.frecuencyTable.scale * i)}</Text >
             </>
@@ -45,13 +45,14 @@ const Guide = (props: SChartPropsType) => {
 const recursive_niveles = (props: SChartPropsType, index = 0, key = "") => {
     if (!props.frecuencyTable.niveles[index]) return null;
     let { width, height, x, y } = props.viewBox
+    const textColor = props.textColor ?? "#000"
     const heightInterval = (height / props.frecuencyTable.niveles[index].length);
-    let padding = heightInterval * 0.1;
+    let padding = heightInterval * (props.space ?? 0);
     return props.frecuencyTable.niveles[index].map((a, i) => {
 
 
         let indexAux = props.frecuencyTable.intervals.findIndex(itm => itm == (!key ? a : key + "-" + a));
-        console.log(props.frecuencyTable);
+        // console.log(props.frecuencyTable);
         let fy = 0;
         if (indexAux > -1) {
             fy = props.frecuencyTable.relative_frequency_scaled[indexAux]
@@ -65,14 +66,17 @@ const recursive_niveles = (props: SChartPropsType, index = 0, key = "") => {
         const ycenter = ys + (heightInterval / 2)
         const strokeWidth = props.strokeWidth;
 
+
+        const xf = x - 4 - ((props.frecuencyTable.niveles.length - 1 - index) * (x-20))
         return <>
             {!props.showLabel ? null :
                 <Text
-                    dx={(x + (10 * index)) - x}
+                    dx={xf}
                     dy={ycenter - (padding / 2)}
                     translateY={4}
-                    textAnchor="start"
-                    fill={"#fff"}
+                    transform={`rotate(${indexAux <= -1 ? -90 : 0},${xf} , ${ycenter - (padding / 2)})`}
+                    textAnchor={indexAux <= -1 ? "middle" : "end"}
+                    fill={textColor}
                     fontSize={10}
                 >{a}</Text >
             }
@@ -94,7 +98,7 @@ const recursive_niveles = (props: SChartPropsType, index = 0, key = "") => {
                 dy={ycenter - (padding / 2)}
                 translateY={4}
                 textAnchor="start"
-                fill={"#fff"}
+                fill={textColor}
                 fontSize={10}
             >{props.frecuencyTable.frequency_data[indexAux]}</Text >}
             </>}
@@ -129,8 +133,8 @@ export default (props: SChartPropsType) => {
         newViewBox = { width: width - 70, height: height - 30, x: 66, y: 4 }
     }
 
-    console.log("entorrotn")
-    return <Svg height="100%" width="100%" viewBox={`0 0 ${width} ${height}`} >
+
+    return <Svg height="100%" width="100%" viewBox={`0 0 ${width} ${height}`}>
         {!props.showGuide ? null : <Guide {...props} viewBox={newViewBox} />}
         {/* <Intervals {...props} viewBox={newViewBox} /> */}
         <Niveles {...props} viewBox={newViewBox} />

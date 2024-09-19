@@ -9,9 +9,16 @@ export type SChartPropsType = {
     frecuencyTable?: FrecuencyTable,
     showLabel?: boolean,
     showValue?: boolean,
+    showGuide?: boolean,
+    showControl?: boolean,
     strokeWidth?: number,
+    textColor?: string,
+    space?: number,
     colors?: string[],
-    style?: ViewStyle
+    style?: ViewStyle,
+    min_value?: number,
+    max_value?: number,
+    sort?: (a, b) => number
 }
 
 
